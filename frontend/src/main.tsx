@@ -4,8 +4,14 @@ import App from './App.js';
 
 import './css/index.css';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+const rootElement = document.getElementById('root');
+
+if (rootElement) {
+  createRoot(rootElement).render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );
+} else {
+  console.error("L'élément avec l'ID 'root' est introuvable dans le DOM.");
+}
