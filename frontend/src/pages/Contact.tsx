@@ -21,12 +21,29 @@ const Contact = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log('Form Submitted:', data);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      console.log(data);
+
+      const response = await fetch('http://localhost:5000/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) throw new Error('Erreur lors de l’envoi du formulaire');
+
+      alert('Votre message a bien été envoyé !');
+    } catch (error) {
+      console.error(error);
+      alert('Une erreur est survenue, veuillez réessayer.');
+    }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-(--background)">
+    <div className="bg-background flex min-h-screen items-center justify-center">
       <Card className="w-full max-w-lg shadow-lg">
         <CardHeader>
           <CardTitle className="text-xl font-semibold">Contactez-nous</CardTitle>
