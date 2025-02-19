@@ -1,6 +1,8 @@
 import { createContext, useContext, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { fetchProfile } from '@/utils/api';
+
 interface AuthContextType {
   isAuthenticated: boolean;
   token: string | null;
@@ -11,23 +13,6 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-const fetchProfile = async (token: string | null) => {
-  if (!token) throw new Error('Aucun token disponible');
-
-  const response = await fetch('http://localhost:5000/api/auth/profile', {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error('Token invalide ou expiré');
-  }
-
-  return response.json();
-};
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(sessionStorage.getItem('token'));
@@ -66,7 +51,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider
+    <AuthContext
       value={{
         isAuthenticated: isSuccess,
         token,
@@ -77,7 +62,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </AuthContext>
   );
 };
 

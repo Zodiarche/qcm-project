@@ -14,7 +14,7 @@ import Register from '@/pages/Register';
 const App = () => {
   return (
     <>
-      <Toaster position="top-center" />
+      <Toaster position="bottom-right" />
       <Router>
         <div id="wrapper">
           <Header />

@@ -5,33 +5,17 @@ import { Link, useNavigate } from 'react-router';
 
 import { useAuth } from '@/context/authContext';
 
+import { loginUser } from '@/utils/api.js';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 
-type Inputs = {
+export type LoginInputs = {
   email: string;
   password: string;
-};
-
-const loginUser = async (data: Inputs) => {
-  const response = await fetch('http://localhost:5000/api/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-
-  const responseData = await response.json();
-
-  if (!response.ok) {
-    throw new Error(responseData.message || 'Identifiants incorrects');
-  }
-
-  return responseData;
 };
 
 const Login = () => {
@@ -42,7 +26,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<LoginInputs>();
 
   const mutation = useMutation({
     mutationFn: loginUser,
@@ -57,7 +41,7 @@ const Login = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<LoginInputs> = (data) => {
     mutation.mutate(data);
   };
 

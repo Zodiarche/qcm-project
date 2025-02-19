@@ -3,36 +3,20 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router';
 
+import { registerUser } from '@/utils/api';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 
-type Inputs = {
+export type RegisterInputs = {
   lastname: string;
   firstname: string;
   email: string;
   password: string;
   confirmPassword: string;
-};
-
-const registerUser = async (data: Inputs) => {
-  const response = await fetch('http://localhost:5000/api/auth/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-
-  const responseData = await response.json();
-
-  if (!response.ok) {
-    throw new Error(responseData.message || "Une erreur s'est produite lors de l'inscription");
-  }
-
-  return responseData;
 };
 
 const Register = () => {
@@ -43,7 +27,7 @@ const Register = () => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<RegisterInputs>();
 
   const mutation = useMutation({
     mutationFn: registerUser,
@@ -57,7 +41,7 @@ const Register = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<RegisterInputs> = (data) => {
     mutation.mutate(data);
   };
 
