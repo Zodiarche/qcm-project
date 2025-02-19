@@ -10,14 +10,15 @@ import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 
 type Inputs = {
-  name: string;
+  lastname: string;
+  firstname: string;
   email: string;
   password: string;
   confirmPassword: string;
 };
 
 const registerUser = async (data: Inputs) => {
-  const response = await fetch('http://localhost:5000/register', {
+  const response = await fetch('http://localhost:5000/api/auth/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -25,11 +26,13 @@ const registerUser = async (data: Inputs) => {
     body: JSON.stringify(data),
   });
 
+  const responseData = await response.json();
+
   if (!response.ok) {
-    throw new Error("Une erreur s'est produite lors de l'inscription");
+    throw new Error(responseData.message || "Une erreur s'est produite lors de l'inscription");
   }
 
-  return response.json();
+  return responseData;
 };
 
 const Register = () => {
@@ -50,7 +53,7 @@ const Register = () => {
     },
     onError: (error) => {
       console.error(error);
-      toast.error("L'inscription a échoué, veuillez réessayer plus tard.");
+      toast.error(error.message || "L'inscription a échoué, veuillez réessayer plus tard.");
     },
   });
 
@@ -66,10 +69,18 @@ const Register = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <Label htmlFor="name">Nom</Label>
-              <Input id="name" {...register('name', { required: 'Le nom est requis' })} className={cn(errors.name && 'border-destructive')} />
-              {errors.name && <p className="text-destructive mt-1 text-sm">{errors.name.message}</p>}
+            <div className="flex gap-3">
+              <div className="w-full">
+                <Label htmlFor="lastname">Nom</Label>
+                <Input id="lastname" {...register('lastname', { required: 'Le nom est requis' })} className={cn(errors.lastname && 'border-destructive')} />
+                {errors.lastname && <p className="text-destructive mt-1 text-sm">{errors.lastname.message}</p>}
+              </div>
+
+              <div className="w-full">
+                <Label htmlFor="firstname">Prénom</Label>
+                <Input id="firstname" {...register('firstname', { required: 'Le prénom est requis' })} className={cn(errors.firstname && 'border-destructive')} />
+                {errors.firstname && <p className="text-destructive mt-1 text-sm">{errors.firstname.message}</p>}
+              </div>
             </div>
 
             <div>

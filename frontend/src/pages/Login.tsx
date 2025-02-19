@@ -15,7 +15,7 @@ type Inputs = {
 };
 
 const loginUser = async (data: Inputs) => {
-  const response = await fetch('http://localhost:5000/login', {
+  const response = await fetch('http://localhost:5000/api/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -23,11 +23,13 @@ const loginUser = async (data: Inputs) => {
     body: JSON.stringify(data),
   });
 
+  const responseData = await response.json();
+
   if (!response.ok) {
-    throw new Error('Identifiants incorrects');
+    throw new Error(responseData.message || 'Identifiants incorrects');
   }
 
-  return response.json();
+  return responseData;
 };
 
 const Login = () => {
@@ -41,13 +43,16 @@ const Login = () => {
 
   const mutation = useMutation({
     mutationFn: loginUser,
-    onSuccess: () => {
+    onSuccess: (_data) => {
+      // Récupération de token
+      // Récupération de userID
+
       toast.success('Connexion réussie !');
       navigate('/profile');
     },
     onError: (error) => {
       console.error(error);
-      toast.error('Identifiants incorrects, veuillez réessayer plus tard.');
+      toast.error(error.message || 'Identifiants incorrects');
     },
   });
 

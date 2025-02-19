@@ -9,14 +9,14 @@ import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 
 type Inputs = {
-  name: string;
+  lastname: string;
   firstname: string;
   email: string;
   message: string;
 };
 
 const sendContactForm = async (data: Inputs) => {
-  const response = await fetch('http://localhost:5000/send-email', {
+  const response = await fetch('http://localhost:5000/api/mail/send-email', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -65,9 +65,9 @@ const Contact = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="flex gap-3">
               <div className="w-full">
-                <Label htmlFor="name">Nom</Label>
-                <Input id="name" {...register('name', { required: 'Le nom est requis' })} className={cn(errors.name && 'border-destructive')} />
-                {errors.name && <p className="text-destructive mt-1 text-sm">{errors.name.message}</p>}
+                <Label htmlFor="lastname">Nom</Label>
+                <Input id="lastname" {...register('lastname', { required: 'Le nom est requis' })} className={cn(errors.lastname && 'border-destructive')} />
+                {errors.lastname && <p className="text-destructive mt-1 text-sm">{errors.lastname.message}</p>}
               </div>
 
               <div className="w-full">
