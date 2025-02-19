@@ -1,15 +1,19 @@
-import { Link, useNavigate } from 'react-router';
-import { Button } from '@/components/ui/button';
+import { Link, useNavigate, useLocation } from 'react-router';
 import { useAuth } from '@/context/authContext';
+import { Button } from '@/components/ui/button';
 
 const Header = () => {
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
-    // TODO: Si on est sur une page protégée, on redirige, sinon, on ne fait rien.
-    navigate('/');
+
+    const protectedRoutes = ['/profile'];
+    if (protectedRoutes.includes(location.pathname)) {
+      navigate('/login');
+    }
   };
 
   return (
@@ -26,6 +30,11 @@ const Header = () => {
           <Link to="/contact" className="text-foreground hover:text-primary transition">
             Contact
           </Link>
+          {isAuthenticated && (
+            <Link to="/profile" className="text-foreground hover:text-primary transition">
+              Profil
+            </Link>
+          )}
         </nav>
 
         {isAuthenticated ? (

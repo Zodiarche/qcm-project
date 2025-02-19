@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 
 import Footer from '@/components/Footer';
@@ -11,11 +10,9 @@ import Login from '@/pages/Login';
 import Profile from '@/pages/Profile';
 import Register from '@/pages/Register';
 
-const queryClient = new QueryClient();
-
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       <Toaster position="top-center" />
       <Router>
         <div id="wrapper">
@@ -33,7 +30,7 @@ const App = () => {
 
         <Footer />
       </Router>
-    </QueryClientProvider>
+    </>
   );
 };
 
