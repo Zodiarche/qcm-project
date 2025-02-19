@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 
 import Contact from '@/pages/Contact';
+import Dashboard from '@/pages/Dashboard';
 import Home from '@/pages/Home';
 import Login from '@/pages/Login';
 import Profile from '@/pages/Profile';
@@ -26,6 +27,7 @@ const App = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/qcm" element={<QCM />} />
+              <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
           </main>
         </div>

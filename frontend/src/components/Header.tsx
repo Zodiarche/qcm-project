@@ -1,14 +1,30 @@
+import { useQueryClient, useQuery } from '@tanstack/react-query';
 import { Link, useNavigate, useLocation } from 'react-router';
-import { useAuth } from '@/context/authContext';
+
 import { Button } from '@/components/ui/button';
 
+import { fetchProfile } from '@/utils/api';
+
 const Header = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const token = sessionStorage.getItem('token');
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { data: userData } = useQuery({
+    queryKey: ['userProfile'],
+    queryFn: () => fetchProfile(token),
+    enabled: !!token,
+    retry: false,
+    staleTime: 0,
+  });
+
   const handleLogout = () => {
-    logout();
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('userId');
+
+    queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+    queryClient.removeQueries({ queryKey: ['userProfile'] });
 
     const protectedRoutes = ['/profile'];
     if (protectedRoutes.includes(location.pathname)) {
@@ -28,7 +44,7 @@ const Header = () => {
             Accueil
           </Link>
 
-          {isAuthenticated && (
+          {userData && (
             <>
               <Link to="/qcm" className="text-foreground hover:text-primary transition">
                 QCM
@@ -37,6 +53,12 @@ const Header = () => {
               <Link to="/profile" className="text-foreground hover:text-primary transition">
                 Profil
               </Link>
+
+              {userData.isAdmin && (
+                <Link to="/dashboard" className="text-foreground hover:text-primary transition">
+                  Dashboard
+                </Link>
+              )}
             </>
           )}
 
@@ -45,7 +67,7 @@ const Header = () => {
           </Link>
         </nav>
 
-        {isAuthenticated ? (
+        {userData ? (
           <Button variant="outline" onClick={handleLogout}>
             Déconnexion
           </Button>

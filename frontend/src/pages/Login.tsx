@@ -3,8 +3,6 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router';
 
-import { useAuth } from '@/context/authContext';
-
 import { loginUser } from '@/utils/api.js';
 
 import { Button } from '@/components/ui/button';
@@ -20,7 +18,6 @@ export type LoginInputs = {
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   const {
     register,
@@ -31,7 +28,8 @@ const Login = () => {
   const mutation = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      login(data.token, data.userId);
+      sessionStorage.setItem('token', data.token);
+      sessionStorage.setItem('userId', data.userId);
       toast.success('Connexion réussie !');
       navigate('/profile');
     },
