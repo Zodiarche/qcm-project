@@ -27,14 +27,22 @@ const Header = () => {
           <Link to="/" className="text-foreground hover:text-primary transition">
             Accueil
           </Link>
+
+          {isAuthenticated && (
+            <>
+              <Link to="/qcm" className="text-foreground hover:text-primary transition">
+                QCM
+              </Link>
+
+              <Link to="/profile" className="text-foreground hover:text-primary transition">
+                Profil
+              </Link>
+            </>
+          )}
+
           <Link to="/contact" className="text-foreground hover:text-primary transition">
             Contact
           </Link>
-          {isAuthenticated && (
-            <Link to="/profile" className="text-foreground hover:text-primary transition">
-              Profil
-            </Link>
-          )}
         </nav>
 
         {isAuthenticated ? (

@@ -8,6 +8,7 @@ import Contact from '@/pages/Contact';
 import Home from '@/pages/Home';
 import Login from '@/pages/Login';
 import Profile from '@/pages/Profile';
+import QCM from '@/pages/QCM';
 import Register from '@/pages/Register';
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/qcm" element={<QCM />} />
             </Routes>
           </main>
         </div>
