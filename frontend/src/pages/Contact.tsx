@@ -1,11 +1,12 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
-import { cn } from '@/lib/utils'; // ShadCN helper pour gérer les classes conditionnelles
+import { cn } from '@/lib/utils';
 
 type Inputs = {
   name: string;
@@ -14,32 +15,44 @@ type Inputs = {
   message: string;
 };
 
+const sendContactForm = async (data: Inputs) => {
+  const response = await fetch('http://localhost:5000/send-email', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error('Erreur lors de l’envoi du formulaire');
+  }
+
+  return response.json();
+};
+
 const Contact = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    try {
-      console.log(data);
-
-      const response = await fetch('http://localhost:5000/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) throw new Error('Erreur lors de l’envoi du formulaire');
-
-      alert('Votre message a bien été envoyé !');
-    } catch (error) {
+  const mutation = useMutation({
+    mutationFn: sendContactForm,
+    onSuccess: () => {
+      toast.success('Votre message a bien été envoyé !');
+      reset();
+    },
+    onError: (error) => {
       console.error(error);
-      alert('Une erreur est survenue, veuillez réessayer.');
-    }
+      toast.error('Une erreur est survenue, veuillez réessayer plus tard.');
+    },
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    mutation.mutate(data);
   };
 
   return (
@@ -59,8 +72,8 @@ const Contact = () => {
 
               <div className="w-full">
                 <Label htmlFor="firstname">Prénom</Label>
-                <Input id="firstname" {...register('firstname', { required: 'Le nom est requis' })} className={cn(errors.name && 'border-destructive')} />
-                {errors.name && <p className="text-destructive mt-1 text-sm">{errors.name.message}</p>}
+                <Input id="firstname" {...register('firstname', { required: 'Le prénom est requis' })} className={cn(errors.firstname && 'border-destructive')} />
+                {errors.firstname && <p className="text-destructive mt-1 text-sm">{errors.firstname.message}</p>}
               </div>
             </div>
 
@@ -87,8 +100,8 @@ const Contact = () => {
               {errors.message && <p className="text-destructive mt-1 text-sm">{errors.message.message}</p>}
             </div>
 
-            <Button type="submit" className="w-full">
-              Envoyer
+            <Button type="submit" className="w-full" disabled={mutation.isPending}>
+              {mutation.isPending ? 'Envoi en cours...' : 'Envoyer'}
             </Button>
           </form>
         </CardContent>
