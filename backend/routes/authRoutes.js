@@ -1,6 +1,6 @@
 import express from 'express';
 import { register, login, getProfile } from '../controllers/authController.js';
-import authMiddleware from '../middlewares/authMiddleware.js';
+import { isAuthenticated } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -11,6 +11,6 @@ router.post('/register', register);
 router.post('/login', login);
 
 // Route pour récupérer les informations du profil
-router.get('/profile', authMiddleware, getProfile);
+router.get('/profile', isAuthenticated, getProfile);
 
 export default router;

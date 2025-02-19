@@ -1,5 +1,5 @@
 import { useQueryClient, useQuery } from '@tanstack/react-query';
-import { Link, useNavigate, useLocation } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 
@@ -9,7 +9,6 @@ const Header = () => {
   const token = sessionStorage.getItem('token');
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const { data: userData } = useQuery({
     queryKey: ['userProfile'],

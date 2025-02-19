@@ -61,8 +61,7 @@ export const login = async (req, res) => {
  */
 export const getProfile = async (req, res) => {
   try {
-    // Récupérer l'utilisateur en base de données via son ID contenu dans req.user
-    const user = await User.findById(req.user.userId).select('-password');
+    const user = await User.findById(req.userData.userId).select('-password');
 
     if (!user) {
       return res.status(404).json({ message: 'Utilisateur non trouvé.' });

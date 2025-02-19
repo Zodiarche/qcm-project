@@ -1,26 +1,45 @@
 import jwt from 'jsonwebtoken';
 
 /**
- * Middleware pour vérifier l'authenticité du token JWT
+ * Récupère et vérifie les données utilisateur à partir du token dans la session.
  */
-const authMiddleware = (req, res, next) => {
+const getUserDataFromToken = (request) => {
+  const token = request.headers.authorization.split(' ')[1];
+  if (!token) return null;
+
   try {
-    // Récupérer le token dans l'en-tête Authorization
-    const token = req.headers.authorization?.split(' ')[1];
-
-    if (!token) {
-      return res.status(401).json({ message: 'Accès non autorisé. Token manquant.' });
-    }
-
-    // Vérifier et décoder le token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    // Ajouter l'utilisateur décodé à la requête
-    req.user = decoded;
-    next();
+    return verifyToken(token);
   } catch (error) {
-    return res.status(403).json({ message: 'Token invalide ou expiré.', error: error.message });
+    return null;
   }
 };
 
-export default authMiddleware;
+/**
+ * Vérifie si l'utilisateur est authentifié.
+ */
+export const isAuthenticated = (request, response, next) => {
+  const userData = getUserDataFromToken(request);
+  if (!userData) return response.status(401).json({ message: 'Accès refusé, pas de token valide fourni' });
+
+  request.userData = userData;
+  next();
+};
+
+/**
+ * Vérifie si l'utilisateur est administrateur.
+ */
+export const isAdmin = (request, response, next) => {
+  const userData = getUserDataFromToken(request);
+  if (!userData) return response.status(401).json({ message: 'Accès refusé, pas de token valide fourni' });
+  if (!userData.isAdmin) return response.status(403).json({ message: 'Accès refusé, privilèges insuffisants' });
+
+  request.userData = userData;
+  next();
+};
+
+/**
+ * Vérifie le token JWT.
+ */
+const verifyToken = (token) => {
+  return jwt.verify(token, process.env.JWT_SECRET);
+};

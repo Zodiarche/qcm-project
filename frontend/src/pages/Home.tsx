@@ -17,7 +17,7 @@ const Home = () => {
         </a>
       </div>
 
-      <h1 className="mb-4 text-4xl font-extrabold text-blue-400">Vite + React + TailwindCSS</h1>
+      <h1 className="mb-4 text-4xl font-extrabold text-blue-400">Vite + React</h1>
 
       <div className="w-80 rounded-lg bg-gray-800 p-6 text-center shadow-lg">
         <p className="mb-4 text-lg">Clique sur le bouton pour augmenter le compteur :</p>
