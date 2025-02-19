@@ -25,11 +25,7 @@ const Header = () => {
 
     queryClient.invalidateQueries({ queryKey: ['userProfile'] });
     queryClient.removeQueries({ queryKey: ['userProfile'] });
-
-    const protectedRoutes = ['/profile'];
-    if (protectedRoutes.includes(location.pathname)) {
-      navigate('/login');
-    }
+    navigate('/login');
   };
 
   return (
