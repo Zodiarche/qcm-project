@@ -1,7 +1,17 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/authContext';
 
 const Header = () => {
+  const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    // TODO: Si on est sur une page protégée, on redirige, sinon, on ne fait rien.
+    navigate('/');
+  };
+
   return (
     <header className="bg-background border-b shadow-md">
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
@@ -18,9 +28,15 @@ const Header = () => {
           </Link>
         </nav>
 
-        <Link to="/login">
-          <Button variant="outline">Connexion</Button>
-        </Link>
+        {isAuthenticated ? (
+          <Button variant="outline" onClick={handleLogout}>
+            Déconnexion
+          </Button>
+        ) : (
+          <Link to="/login">
+            <Button variant="outline">Connexion</Button>
+          </Link>
+        )}
       </div>
     </header>
   );

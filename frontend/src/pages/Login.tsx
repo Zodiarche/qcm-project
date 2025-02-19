@@ -3,6 +3,8 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router';
 
+import { useAuth } from '@/context/authContext';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -34,6 +36,7 @@ const loginUser = async (data: Inputs) => {
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const {
     register,
@@ -43,10 +46,8 @@ const Login = () => {
 
   const mutation = useMutation({
     mutationFn: loginUser,
-    onSuccess: (_data) => {
-      // Récupération de token
-      // Récupération de userID
-
+    onSuccess: (data) => {
+      login(data.token, data.userId);
       toast.success('Connexion réussie !');
       navigate('/profile');
     },
