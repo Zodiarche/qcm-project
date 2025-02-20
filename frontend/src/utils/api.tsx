@@ -1,4 +1,5 @@
 import { LoginInputs } from '@/pages/Login';
+import { QcmResult } from '@/pages/Profile';
 import { RegisterInputs } from '@/pages/Register';
 
 export const loginUser = async (data: LoginInputs) => {
@@ -75,5 +76,22 @@ export const submitQcmResponse = async (data: { qcmId: string; responses: Record
   });
 
   if (!response.ok) throw new Error('Erreur lors de la soumission des réponses');
+  return response.json();
+};
+
+export const fetchUserQcmsResult = async (): Promise<QcmResult[]> => {
+  const token = sessionStorage.getItem('token');
+  if (!token) {
+    throw new Error('Utilisateur non authentifié');
+  }
+
+  const response = await fetch('http://localhost:5000/api/profile/qcms', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Erreur serveur: ${response.status}`);
+  }
+
   return response.json();
 };

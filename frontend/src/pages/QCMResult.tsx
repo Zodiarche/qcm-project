@@ -47,7 +47,7 @@ const QCMResult = () => {
       </Card>
 
       <Button asChild className="mt-6 w-full">
-        <Link to="profil">Voir mon profil</Link>
+        <Link to="/profile">Voir mon profil</Link>
       </Button>
     </div>
   );
