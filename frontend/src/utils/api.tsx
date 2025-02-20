@@ -53,3 +53,9 @@ export const fetchProfile = async (token: string | null) => {
 
   return response.json();
 };
+
+export const fetchQcms = async () => {
+  const response = await fetch('http://localhost:5000/api/qcms');
+  if (!response.ok) throw new Error('Erreur lors du chargement des QCMs');
+  return response.json();
+};

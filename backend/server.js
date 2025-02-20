@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 
 import emailRoutes from './routes/emailRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import qcmRoutes from './routes/qcmRoutes.js';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ mongoose
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/mail', emailRoutes);
+app.use('/api/qcms', qcmRoutes);
 
 app.listen(port, () => {
   console.log(`Serveur backend démarré sur http://localhost:${port}`);
