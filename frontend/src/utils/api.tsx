@@ -59,3 +59,21 @@ export const fetchQcms = async () => {
   if (!response.ok) throw new Error('Erreur lors du chargement des QCMs');
   return response.json();
 };
+
+export const fetchQcmById = async (id: string) => {
+  const response = await fetch(`http://localhost:5000/api/qcms/${id}`);
+
+  if (!response.ok) throw new Error('Erreur lors du chargement du QCM');
+  return response.json();
+};
+
+export const submitQcmResponse = async (data: { qcmId: string; responses: Record<string, string> }) => {
+  const response = await fetch('http://localhost:5000/api/qcms/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ...data, userId: sessionStorage.getItem('userId') }),
+  });
+
+  if (!response.ok) throw new Error('Erreur lors de la soumission des réponses');
+  return response.json();
+};

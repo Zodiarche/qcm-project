@@ -41,7 +41,7 @@ const Header = () => {
 
           {userData && (
             <>
-              <Link to="/qcm" className="text-foreground hover:text-primary transition">
+              <Link to="/qcms" className="text-foreground hover:text-primary transition">
                 QCM
               </Link>
 

@@ -10,6 +10,8 @@ import Home from '@/pages/Home';
 import Login from '@/pages/Login';
 import Profile from '@/pages/Profile';
 import QCMList from '@/pages/QCM';
+import QCMDetail from '@/pages/QCMDetail';
+import QCMResult from '@/pages/QCMResult';
 import Register from '@/pages/Register';
 
 const App = () => {
@@ -26,7 +28,9 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/qcm" element={<QCMList />} />
+              <Route path="/qcms" element={<QCMList />} />
+              <Route path="/qcms/:id" element={<QCMDetail />} />
+              <Route path="/qcms/:id/result" element={<QCMResult />} />
               <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
           </main>

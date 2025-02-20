@@ -46,7 +46,7 @@ const QCMList = () => {
               <CardContent>
                 <p className="text-muted-foreground">{qcm.description || 'Aucune description disponible.'}</p>
                 <Button asChild className="mt-4 w-full">
-                  <a href={`/qcm/${qcm._id}`}>Accéder au QCM</a>
+                  <a href={`/qcms/${qcm._id}`}>Accéder au QCM</a>
                 </Button>
               </CardContent>
             </Card>

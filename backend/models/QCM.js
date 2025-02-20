@@ -1,9 +1,12 @@
 import mongoose from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
 const questionSchema = new mongoose.Schema({
+  _id: { type: String, default: uuidv4 },
   text: { type: String, required: true },
   choices: [
     {
+      _id: { type: String, default: uuidv4 },
       text: { type: String, required: true },
       isCorrect: { type: Boolean, required: true },
     },

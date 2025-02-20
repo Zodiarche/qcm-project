@@ -1,0 +1,120 @@
+[
+  {
+    "title": "Culture Générale",
+    "description": "Teste tes connaissances générales avec ces questions variées !",
+    "isPublished": true,
+    "questions": [
+      {
+        "text": "Quelle est la capitale du Japon ?",
+        "_id": "254fc672-a71b-4208-a2dd-1c9fa63845f5",
+        "choices": [
+          {
+            "text": "Tokyo",
+            "isCorrect": true,
+            "_id": "0c57d4b8-cdd4-4250-8b43-b4c5ab8f93a5"
+          },
+          {
+            "text": "Séoul",
+            "isCorrect": false,
+            "_id": "80c28f88-e811-4d5c-bd0e-6e9d4b2e50d1"
+          },
+          {
+            "text": "Pékin",
+            "isCorrect": false,
+            "_id": "a660dd2e-a7ff-4dd7-ad54-a7898c0ff07b"
+          },
+          {
+            "text": "Bangkok",
+            "isCorrect": false,
+            "_id": "83674f4e-fda0-4e13-8b95-d6b7ed58bd6b"
+          }
+        ]
+      },
+      {
+        "text": "Qui a peint la Joconde ?",
+        "_id": "4390f67f-f17d-4dfd-81d7-937095c4d730",
+        "choices": [
+          {
+            "text": "Vincent Van Gogh",
+            "isCorrect": false,
+            "_id": "d083e927-06b9-44c9-82cc-8c0baba3a511"
+          },
+          {
+            "text": "Pablo Picasso",
+            "isCorrect": false,
+            "_id": "f868abcb-c26a-4c34-8f4d-6d2136066ad5"
+          },
+          {
+            "text": "Léonard de Vinci",
+            "isCorrect": true,
+            "_id": "0c6c91d7-5651-4136-93d2-b5550582f0df"
+          },
+          {
+            "text": "Michel-Ange",
+            "isCorrect": false,
+            "_id": "01c86bde-9697-4d7a-9638-5494f5bde8a8"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Développement Web",
+    "description": "Un quiz sur les bases du développement web !",
+    "isPublished": true,
+    "questions": [
+      {
+        "text": "Que signifie HTML ?",
+        "_id": "0901b5b4-b13f-4c0f-bf05-9d8bd115e2a4",
+        "choices": [
+          {
+            "text": "Hyper Text Markup Language",
+            "isCorrect": true,
+            "_id": "e100a4e0-364d-4746-a23f-cbae42c50805"
+          },
+          {
+            "text": "High Tech Modern Language",
+            "isCorrect": false,
+            "_id": "a742f341-9ffd-4716-806c-5a542c88387a"
+          },
+          {
+            "text": "Hyperlink Transfer Machine Language",
+            "isCorrect": false,
+            "_id": "697a12e6-33fc-48d6-b85e-8cbce39a36ec"
+          },
+          {
+            "text": "Home Tool Markup Language",
+            "isCorrect": false,
+            "_id": "d3300315-5bff-450f-b200-53a5fb94cb82"
+          }
+        ]
+      },
+      {
+        "text": "Quel langage est principalement utilisé pour styliser une page web ?",
+        "_id": "bb4e62bb-ac4c-4715-979f-464e15755286",
+        "choices": [
+          {
+            "text": "JavaScript",
+            "isCorrect": false,
+            "_id": "f1c9fabc-7a8e-471f-8e78-62143e0e6616"
+          },
+          {
+            "text": "HTML",
+            "isCorrect": false,
+            "_id": "0e92618b-af47-4624-bead-0fa1d9f7ab7d"
+          },
+          {
+            "text": "CSS",
+            "isCorrect": true,
+            "_id": "0d41ca0c-0ec2-4206-882b-9503d23954d9"
+          },
+          {
+            "text": "PHP",
+            "isCorrect": false,
+            "_id": "d9a60d58-13e1-45d5-8371-ecd2529e8782"
+          }
+        ]
+      }
+    ]
+  }
+]
