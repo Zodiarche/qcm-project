@@ -38,8 +38,6 @@ router.post('/submit', async (req, res) => {
     let score = 0;
     let detailedResponses = [];
 
-    console.log(responses);
-
     // Parcourir les questions du QCM et comparer avec les réponses de l'utilisateur
     qcm.questions.forEach((question) => {
       const questionId = question._id.toString();
@@ -67,6 +65,7 @@ router.post('/submit', async (req, res) => {
     const result = new Result({
       user: userId,
       qcm: qcmId,
+      title: qcm.title,
       score: score,
       responses: detailedResponses,
     });

@@ -11,13 +11,14 @@ export const getCompletedQcms = async (req, res) => {
     const completedQcms = await Result.find({ user: userId }).populate('qcm', 'title').sort({ completedAt: -1 });
 
     // Formater la réponse
-    const formattedQcms = completedQcms.map((qcm) => ({
-      id: qcm._id,
-      title: qcm.qcm.title,
-      score: qcm.score,
-      totalQuestions: qcm.responses.length,
-      date: qcm.completedAt.toISOString(),
-      responses: qcm.responses.map((response) => ({
+    const formattedQcms = completedQcms.map((completedQcm) => ({
+      id: completedQcm._id,
+      qcm: completedQcm.qcm._id,
+      title: completedQcm.title,
+      score: completedQcm.score,
+      totalQuestions: completedQcm.responses.length,
+      date: completedQcm.completedAt.toISOString(),
+      responses: completedQcm.responses.map((response) => ({
         question: response.question.text,
         selectedChoice: response.selectedChoice,
         isCorrect: response.isCorrect,

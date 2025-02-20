@@ -48,8 +48,6 @@ const QCMDetail = () => {
     mutation.mutate({ qcmId: id, responses: answers });
   };
 
-  console.log(qcm);
-
   if (isLoading) return <p className="text-primary text-center text-lg">Chargement...</p>;
   if (isError || !qcm) return <p className="text-destructive text-center">Une erreur est survenue, veuillez réessayez plus tard.</p>;
 

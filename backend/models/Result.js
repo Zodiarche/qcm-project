@@ -4,6 +4,7 @@ const resultSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
     qcm: { type: mongoose.Schema.Types.ObjectId, ref: 'qcms', required: true },
+    title: { type: String, required: true },
     score: { type: Number, required: true },
     responses: [
       {

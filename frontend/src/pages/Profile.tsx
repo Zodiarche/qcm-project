@@ -14,6 +14,7 @@ interface QcmResponse {
 
 export interface QcmResult {
   id: string;
+  qcm: string;
   title: string;
   score: number;
   totalQuestions: number;
@@ -30,7 +31,7 @@ const Profile = () => {
     isError: isQcmsError,
     error,
   } = useQuery({
-    queryKey: ['qcms'],
+    queryKey: ['userQcms'],
     queryFn: fetchUserQcmsResult,
   });
 
