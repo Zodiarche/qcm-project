@@ -1,6 +1,7 @@
 import express from 'express';
 import QCM from '../models/QCM.js';
 import Result from '../models/Result.js';
+import { isAdmin } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -77,6 +78,64 @@ router.post('/submit', async (req, res) => {
   } catch (error) {
     console.error('Erreur lors de l’enregistrement du résultat:', error);
     res.status(500).json({ message: 'Erreur serveur', error: error.message });
+  }
+});
+
+// Ajouter un QCM
+router.post('/', isAdmin, async (req, res) => {
+  const { title, description, questions } = req.body;
+  const createdBy = req.userData.userId;
+
+  try {
+    const newQCM = new QCM({ title, description, questions, createdBy });
+    await newQCM.save();
+    res.status(201).json(newQCM);
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur lors de la création du QCM', error: err.message });
+  }
+});
+
+// Modifier un QCM
+router.put('/:id', isAdmin, async (req, res) => {
+  const { title, description, questions } = req.body;
+  const { id } = req.params;
+  const createdBy = req.userData.userId;
+
+  try {
+    const qcm = await QCM.findById(id);
+
+    if (!qcm) {
+      return res.status(404).json({ message: 'QCM introuvable' });
+    }
+
+    qcm.title = title || qcm.title;
+    qcm.description = description || qcm.description;
+    qcm.questions = questions || qcm.questions;
+    qcm.createdBy = createdBy || qcm.createdBy;
+
+    await qcm.save();
+    res.status(200).json(qcm);
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur lors de la modification du QCM', error: err.message });
+  }
+});
+
+router.delete('/:id', isAdmin, async (req, res) => {
+  const { id } = req.params;
+
+  console.log(id);
+
+  try {
+    const qcm = await QCM.findById(id);
+
+    if (!qcm) {
+      return res.status(404).json({ message: 'QCM introuvable' });
+    }
+
+    await QCM.deleteOne({ _id: id });
+    res.status(200).json({ message: 'QCM supprimé avec succès' });
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur lors de la suppression du QCM', error: err.message });
   }
 });
 

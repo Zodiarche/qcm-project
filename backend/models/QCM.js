@@ -15,12 +15,10 @@ const questionSchema = new mongoose.Schema({
 
 const qcmSchema = new mongoose.Schema(
   {
-    _id: { type: mongoose.Schema.Types.ObjectId },
     title: { type: String, required: true },
     description: { type: String },
     questions: [questionSchema],
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
-    isPublished: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

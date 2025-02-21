@@ -5,11 +5,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import { fetchQcms, fetchUserQcmsResult } from '@/utils/api';
 
-interface QCM {
+export interface QCM {
   _id: string;
   title: string;
   description?: string;
-  isPublished: boolean;
 }
 
 const QCMList = () => {
