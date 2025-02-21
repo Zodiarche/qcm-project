@@ -1,9 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-
 import { fetchProfile, fetchUserQcmsResult } from '@/utils/api';
 
 interface QcmResponse {
@@ -44,6 +42,33 @@ const Profile = () => {
     queryFn: () => fetchProfile(token),
   });
 
+  // Function to export QCM results as JSON
+  const exportQcmResultsToJson = () => {
+    if (!qcms) return;
+
+    const jsonData = qcms.map((qcm: QcmResult) => ({
+      id: qcm.id,
+      qcm: qcm.qcm,
+      title: qcm.title,
+      score: qcm.score,
+      totalQuestions: qcm.totalQuestions,
+      date: new Date(qcm.date).toLocaleString(),
+      responses: qcm.responses.map((response) => ({
+        question: response.question,
+        selectedChoice: response.selectedChoice,
+        isCorrect: response.isCorrect,
+      })),
+    }));
+
+    const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'qcm_results.json';
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="flex flex-col gap-6 p-6 lg:flex-row">
       {/* TODO: Faire un composant à part pour les données utilisateur
@@ -77,9 +102,14 @@ const Profile = () => {
         )}
       </div>
 
-      {/* TODO: Mettre la correction si on s'est trompé */}
+      {/* QCM Results Section */}
       <div className="bg-card rounded-lg p-6 shadow-lg lg:w-2/3">
         <h2 className="text-foreground text-2xl font-semibold">Historique des QCM</h2>
+        <div className="mt-4 mb-4 text-right">
+          <button onClick={exportQcmResultsToJson} className="hover:bg-primary-foreground text-accent-foreground rounded-lg px-4 py-2 transition">
+            Exporter les résultats QCM en JSON
+          </button>
+        </div>
         {isQcmsLoading ? (
           <Skeleton className="mt-4 h-32 w-full rounded-lg" />
         ) : isQcmsError ? (
