@@ -103,7 +103,7 @@ const Dashboard = () => {
                 )}
               </ul>
 
-              <QCMForm qcmData={editingQCM} refetch={refetch} onClose={handleCloseEditForm} />
+              <QCMForm qcmData={editingQCM} refetch={refetch} />
             </>
           )}
         </div>

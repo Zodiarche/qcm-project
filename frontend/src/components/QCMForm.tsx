@@ -4,10 +4,9 @@ import { useForm, useFieldArray } from 'react-hook-form';
 interface QCMFormProps {
   qcmData: any;
   refetch: () => void;
-  onClose: () => void;
 }
-const QCMForm = ({ qcmData, refetch, onClose }: QCMFormProps) => {
-  const { register, handleSubmit, control, setValue, watch } = useForm();
+const QCMForm = ({ qcmData, refetch }: QCMFormProps) => {
+  const { register, handleSubmit, control, setValue, watch, reset } = useForm();
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'questions',
@@ -54,6 +53,11 @@ const QCMForm = ({ qcmData, refetch, onClose }: QCMFormProps) => {
       if (response.ok) {
         console.log(`${qcmData ? 'QCM mis à jour' : 'QCM ajouté'} :`, responseData);
         refetch();
+        reset({
+          title: '',
+          description: '',
+          questions: [],
+        });
       } else {
         console.error(`${qcmData ? 'Erreur lors de la mise à jour du QCM' : "Erreur lors de l'ajout du QCM"}`, responseData.message);
       }
