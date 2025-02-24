@@ -4,10 +4,11 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 
-import authRoutes from './routes/authRoutes.js';
-import emailRoutes from './routes/emailRoutes.js';
-import profileRoutes from './routes/profileRoutes.js';
-import qcmRoutes from './routes/qcmRoutes.js';
+import authRoutes from './routes/authRoutes';
+import emailRoutes from './routes/emailRoutes';
+import profileRoutes from './routes/profileRoutes';
+import qcmRoutes from './routes/qcmRoutes';
+import { isAuthenticated } from './middlewares/authMiddleware';
 
 dotenv.config();
 
@@ -20,15 +21,15 @@ app.use(bodyParser.json());
 
 // Connexion à MongoDB
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI as string)
   .then(() => console.log('MongoDB connecté'))
-  .catch((err) => console.error('Erreur de connexion MongoDB:', err));
+  .catch((error) => console.error('Erreur de connexion MongoDB:', error));
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/mail', emailRoutes);
-app.use('/api/qcms', qcmRoutes);
-app.use('/api/profile', profileRoutes);
+app.use('/api/qcms', isAuthenticated, qcmRoutes);
+app.use('/api/profile', isAuthenticated, profileRoutes);
 
 app.listen(port, () => {
   console.log(`Serveur backend démarré sur http://localhost:${port}`);

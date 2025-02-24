@@ -56,7 +56,13 @@ export const fetchProfile = async (token: string | null) => {
 };
 
 export const fetchQcms = async () => {
-  const response = await fetch('http://localhost:5000/api/qcms');
+  const response = await fetch('http://localhost:5000/api/qcms', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+    },
+  });
+
   if (!response.ok) throw new Error('Erreur lors du chargement des QCMs');
   return response.json();
 };
