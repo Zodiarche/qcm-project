@@ -1,7 +1,29 @@
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-const questionSchema = new mongoose.Schema({
+interface IChoice {
+  _id: string;
+  text: string;
+  isCorrect: boolean;
+}
+
+interface IQuestion {
+  _id: string;
+  text: string;
+  choices: IChoice[];
+}
+
+interface IQCM extends mongoose.Document {
+  title: string;
+  description?: string;
+  questions: IQuestion[];
+  createdBy: mongoose.Schema.Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Définition du schéma pour Question
+const questionSchema = new mongoose.Schema<IQuestion>({
   _id: { type: String, default: uuidv4 },
   text: { type: String, required: true },
   choices: [
@@ -13,7 +35,7 @@ const questionSchema = new mongoose.Schema({
   ],
 });
 
-const qcmSchema = new mongoose.Schema(
+const qcmSchema = new mongoose.Schema<IQCM>(
   {
     title: { type: String, required: true },
     description: { type: String },
@@ -23,4 +45,4 @@ const qcmSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model('qcms', qcmSchema);
+export default mongoose.model<IQCM>('qcms', qcmSchema);
