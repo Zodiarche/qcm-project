@@ -1,8 +1,21 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { z } from 'zod';
 
 import User from '../models/User.js';
+
+const registerSchema = z.object({
+  lastname: z.string().min(2, 'Le nom doit contenir au moins 2 caractères'),
+  firstname: z.string().min(2, 'Le prénom doit contenir au moins 2 caractères'),
+  email: z.string().email('Email invalide'),
+  password: z.string().min(12, 'Le mot de passe doit contenir au moins 12 caractères'),
+});
+
+const loginSchema = z.object({
+  email: z.string().email('Email invalide'),
+  password: z.string().min(12, 'Le mot de passe doit contenir au moins 12 caractères'),
+});
 
 /**
  * Inscription d'un nouvel utilisateur.
@@ -17,16 +30,19 @@ import User from '../models/User.js';
  */
 export const register = async (request: Request, response: Response): Promise<Response> => {
   try {
-    const { lastname, firstname, email, password } = request.body;
-
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return response.status(400).json({ message: 'Cet email est déjà utilisé.' });
+    const validatedData = registerSchema.safeParse(request.body);
+    if (!validatedData.success) {
+      return response.status(400).json({ message: 'Données invalides', errors: validatedData.error.errors });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const { lastname, firstname, email, password } = validatedData.data;
 
+    const existingUser = await User.findOne({ email });
+    if (existingUser) return response.status(400).json({ message: 'Cet email est déjà utilisé.' });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ lastname, firstname, email, password: hashedPassword });
+
     await newUser.save();
 
     return response.status(201).json({ message: 'Utilisateur créé avec succès' });
@@ -52,7 +68,12 @@ export const register = async (request: Request, response: Response): Promise<Re
  */
 export const login = async (request: Request, response: Response): Promise<Response> => {
   try {
-    const { email, password } = request.body;
+    const validatedData = loginSchema.safeParse(request.body);
+    if (!validatedData.success) {
+      return response.status(400).json({ message: 'Données invalides', errors: validatedData.error.errors });
+    }
+
+    const { email, password } = validatedData.data;
 
     const user = await User.findOne({ email });
     if (!user) return response.status(400).json({ message: 'Identifiants incorrects' });
