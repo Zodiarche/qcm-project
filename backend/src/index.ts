@@ -15,11 +15,9 @@ dotenv.config();
 const app = express();
 const port = 5000;
 
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// Connexion à MongoDB
 mongoose
   .connect(process.env.MONGO_URI as string)
   .then(() => console.log('MongoDB connecté'))
